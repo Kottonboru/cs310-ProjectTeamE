@@ -64,7 +64,7 @@ public class TASDatabase {
     public Badge getBadge(String badgeid){
         try{
             
-            pstSelect = conn.prepareStatement("SELECT all FROM badge where id = ?");
+            pstSelect = conn.prepareStatement("SELECT * FROM badge where id = ?");
             
             pstSelect.setString(1, badgeid);
             
@@ -95,7 +95,7 @@ public class TASDatabase {
         
         try{
             
-            pstSelect = conn.prepareStatement("SELECT all FROM punch where id = ?");
+            pstSelect = conn.prepareStatement("SELECT * FROM punch where id = ?");
             
             pstSelect.execute();
             resultset = pstSelect.getResultSet();
