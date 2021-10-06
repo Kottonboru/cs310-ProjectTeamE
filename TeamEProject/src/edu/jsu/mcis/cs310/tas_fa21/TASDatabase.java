@@ -118,7 +118,6 @@ public class TASDatabase {
     
     public Shift getShift(String shiftID) {
         try {
-            //I think this method is correct but I can't test it yet without the Shift class
             pstSelect = conn.prepareStatement("select * from employee where id=7");
             
             pstSelect.setString(7, shiftID);
@@ -143,7 +142,6 @@ public class TASDatabase {
     
     public Shift getShift(Badge b) {
         try {
-            //Probably not correct yet, just something to work off of
             pstSelect = conn.prepareStatement("select * from employee where id=1");
             
             //pstSelect.setString(1, b);
