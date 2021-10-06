@@ -146,7 +146,7 @@ public class TASDatabase {
             //Probably not correct yet, just something to work off of
             pstSelect = conn.prepareStatement("select * from employee where id=1");
             
-            pstSelect.setString(1, b);
+            //pstSelect.setString(1, b);
             
             pstSelect.execute();
             resultset = pstSelect.getResultSet();

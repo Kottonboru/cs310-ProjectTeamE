@@ -1,2 +1,9 @@
-/nbproject/private/
-/build/
+build/
+dist/
+nbproject/
+build.xml
+manifest.mf
+*.pdf
+*.sql
+*.jar
+.gitignore
