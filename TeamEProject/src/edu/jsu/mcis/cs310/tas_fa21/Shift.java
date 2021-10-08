@@ -18,7 +18,9 @@ public class Shift {
     private int lunchDuration;
     private int shiftDuration;
 
-    public Shift(int id, String description, LocalTime start, LocalTime stop, int interval, int gracePeriod, int doc, LocalTime lunchStart, LocalTime lunchStop, int lunchDeduct, int lunchDuration, int shiftDuration) {
+    public Shift(int id, String description, LocalTime start, LocalTime stop, int interval, 
+            int gracePeriod, int doc, LocalTime lunchStart, LocalTime lunchStop, int lunchDeduct, 
+            int lunchDuration, int shiftDuration) {
         this.id = id;
         this.description = description;
         this.start = start;
@@ -132,8 +134,8 @@ public class Shift {
     @Override
     public String toString()
     {
-        return id + description + start + stop + interval + gracePeriod + doc + lunchStart + 
-                lunchStop + lunchDeduct + lunchDuration + shiftDuration;
+        return description + ": " + start + " - " + " (" + shiftDuration + " minutes); Lunch: " + 
+               lunchStart + " - " + lunchStop + " (" + lunchDuration + " minutes)";
     }
     
     
