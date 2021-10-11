@@ -89,6 +89,7 @@ public class TASDatabase {
         return null;
     }
     
+<<<<<<< HEAD
     public Punch getPunch(int punchid){
         Timestamp originalTimeStamp = null;
         Punch p = null;
@@ -96,6 +97,14 @@ public class TASDatabase {
         try{
             
             pstSelect = conn.prepareStatement("SELECT * FROM punch where id = ?");
+=======
+    public Punch getPunch(int punchid) {
+        Timestamp originalTimeStamp = null;
+        Punch p = null;
+        
+        try {
+            pstSelect = conn.prepareStatement("select * from punch where id=?");
+>>>>>>> feature1-TASDatabase-Aaron
             
             pstSelect.execute();
             resultset = pstSelect.getResultSet();
@@ -108,6 +117,7 @@ public class TASDatabase {
             int punchTypeID = resultset.getInt(5);
             
             p = new Punch(punchID, punchTerminalID, punchBadge, originalTimeStamp, punchTypeID);
+<<<<<<< HEAD
                        
             
         }
@@ -118,4 +128,63 @@ public class TASDatabase {
         return p;
     }
     
+=======
+        }
+        
+        catch(Exception e) {
+            System.err.println("** getPunch: " + e.toString());
+        }
+        
+        return p;
+    }
+    
+    
+    public Shift getShift(String shiftID) {
+        try {
+            pstSelect = conn.prepareStatement("select * from employee where id=7");
+            
+            pstSelect.setString(7, shiftID);
+            
+            pstSelect.execute();
+            resultset = pstSelect.getResultSet();
+            resultset.first();
+            
+            //Results
+            String idNum = resultset.getString(7);
+            
+            Shift s = new Shift(idNum);
+            
+            return s;
+        }
+        
+        catch(Exception e) {
+            System.err.println("** getShift: " + e.toString());
+        }
+        return null;
+    }
+    
+    public Shift getShift(Badge b) {
+        try {
+            pstSelect = conn.prepareStatement("select * from employee where id=1");
+            
+            //pstSelect.setString(1, b);
+            
+            pstSelect.execute();
+            resultset = pstSelect.getResultSet();
+            resultset.first();
+            
+            //Results
+            String idNum = resultset.getString(1);
+            
+            Badge b = new Badge(idNum);
+            
+            return b;
+        }
+        
+        catch(Exception e) {
+            System.err.println("** getShift: " + e.toString());
+        }
+        return null;
+    }
+
 }
