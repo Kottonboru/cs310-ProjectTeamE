@@ -12,4 +12,3 @@ public enum PunchType {
     private PunchType(String d) { description = d; }
     @Override
     public String toString() { return description; }
-}

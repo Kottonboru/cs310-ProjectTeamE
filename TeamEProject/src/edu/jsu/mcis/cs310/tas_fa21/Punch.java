@@ -1,6 +1,7 @@
 
 package edu.jsu.mcis.cs310.tas_fa21;
 
+
 import java.sql.*;
 
 /**
@@ -76,5 +77,3 @@ public class Punch {
     public String printOriginal(){
         return "#" + badgeid + " " + punchtype + ": " + originaltimestamp;
     }
-    
-}
