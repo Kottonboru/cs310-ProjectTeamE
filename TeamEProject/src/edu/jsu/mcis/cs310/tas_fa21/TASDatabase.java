@@ -1,4 +1,3 @@
-
 package edu.jsu.mcis.cs310.tas_fa21;
 
 import java.sql.*;
@@ -89,22 +88,12 @@ public class TASDatabase {
         return null;
     }
     
-<<<<<<< HEAD
-    public Punch getPunch(int punchid){
-        Timestamp originalTimeStamp = null;
-        Punch p = null;
-        
-        try{
-            
-            pstSelect = conn.prepareStatement("SELECT * FROM punch where id = ?");
-=======
     public Punch getPunch(int punchid) {
         Timestamp originalTimeStamp = null;
         Punch p = null;
         
         try {
             pstSelect = conn.prepareStatement("select * from punch where id=?");
->>>>>>> feature1-TASDatabase-Aaron
             
             pstSelect.execute();
             resultset = pstSelect.getResultSet();
@@ -116,19 +105,8 @@ public class TASDatabase {
             originalTimeStamp = resultset.getTimestamp(4);
             int punchTypeID = resultset.getInt(5);
             
+            //Punch(int id, int terminalid, Badge badge, int punchtypeid, Timestamp originaltimestamp
             p = new Punch(punchID, punchTerminalID, punchBadge, originalTimeStamp, punchTypeID);
-<<<<<<< HEAD
-                       
-            
-        }
-        
-        catch(Exception e){
-            System.err.println("** getPunch: " + e.toString());
-        }
-        return p;
-    }
-    
-=======
         }
         
         catch(Exception e) {
@@ -186,5 +164,4 @@ public class TASDatabase {
         }
         return null;
     }
-
 }
