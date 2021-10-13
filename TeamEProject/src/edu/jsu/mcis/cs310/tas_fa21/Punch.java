@@ -10,34 +10,34 @@ import java.sql.*;
  */
 public class Punch {
     //private string adjustmenttype;
-    private int id;
+    private int punchId;
     private int terminalid;
-    private Badge badge;
+    private Badge badgeid;
     private Timestamp originaltimestamp;
     PunchType punchtype;
 // old punch
-    public Punch(int id, int terminalid, Badge badge, int punchtypeid, Timestamp originaltimestamp) {
+    public Punch(int punchId, int terminalid, Badge badgeid, int punchtypeid, Timestamp originaltimestamp) {
         //this.adjustmenttype = adjustmenttype;
-        this.id = id;
+        this.punchId = punchId;
         this.terminalid = terminalid;
-        this.badge = badge;
+        this.badgeid = badgeid;
         this.punchtype = PunchType.values()[punchtypeid];
         this.originaltimestamp = originaltimestamp;
     }
 // new punch
     public Punch(int terminalid, Badge badgeid, int punchtypeid, Timestamp originaltimestamp) {
         this.terminalid = terminalid;
-        this.badge = badge;
+        this.badgeid = badgeid;
         this.punchtype = PunchType.values()[punchtypeid]; 
         this.originaltimestamp = originaltimestamp;
     }
 
-    public int getId() {
-        return id;
+    public int getPunchId() {
+        return punchId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPunchId(int id) {
+        this.punchId = punchId;
     }
 
     public Timestamp getOriginaltimestamp() {
@@ -63,11 +63,11 @@ public class Punch {
     }
 
     public Badge getBadgeId() {
-        return badge;
+        return badgeid;
     }
 
     public void setBadgeId(Badge badge) {
-        this.badge = badge;
+        this.badgeid = badgeid;
     }
 
     public PunchType getPunchtype() {
@@ -75,7 +75,7 @@ public class Punch {
     }
     
     public String printOriginal(){
-        return "#" + badge + " " + punchtype + ": " + originaltimestamp;
+        return "#" + badgeid + " " + punchtype + ": " + originaltimestamp;
     }
 
 }

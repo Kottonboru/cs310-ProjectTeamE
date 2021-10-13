@@ -2,7 +2,7 @@ package edu.jsu.mcis.cs310.tas_fa21;
 
 import java.sql.*;
 import java.sql.Connection;
-
+import java.time.*;
 
 
 public class TASDatabase {
@@ -101,12 +101,13 @@ public class TASDatabase {
             resultset.first();
             int punchID = resultset.getInt(1);
             int punchTerminalID = resultset.getInt(2);
-            String punchBadge = resultset.getString(3);
+            String punchBadgeID = resultset.getString(3);
+            Badge punchBadge = new Badge(punchBadgeID);
             originalTimeStamp = resultset.getTimestamp(4);
             int punchTypeID = resultset.getInt(5);
             
             //Punch(int id, int terminalid, Badge badge, int punchtypeid, Timestamp originaltimestamp
-            p = new Punch(punchID, punchTerminalID, punchBadge, originalTimeStamp, punchTypeID);
+            p = new Punch(punchID, punchTerminalID, punchBadge, punchTypeID, originalTimeStamp);
         }
         
         catch(Exception e) {
@@ -128,10 +129,10 @@ public class TASDatabase {
             resultset.first();
             
             //Results
-            String idNum = resultset.getString(7);
+            int idNum = resultset.getInt(7);
             
             Shift s = new Shift(idNum);
-            
+   
             return s;
         }
         
@@ -154,9 +155,9 @@ public class TASDatabase {
             //Results
             String idNum = resultset.getString(1);
             
-            Badge b = new Badge(idNum);
-            
-            return b;
+            b = new Badge(idNum);
+            int badgeId = b.getId();
+            return ;
         }
         
         catch(Exception e) {

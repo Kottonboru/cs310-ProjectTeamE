@@ -33,7 +33,10 @@ public class Shift {
         this.lunchDuration = Duration.between(lunchStart, lunchStop).toMinutesPart();
         this.shiftDuration = Duration.between(start, stop).toMinutesPart();
     }
-
+    public Shift(int id){
+        this.id=id;
+    }
+    
     public int getId() {
         return id;
     }

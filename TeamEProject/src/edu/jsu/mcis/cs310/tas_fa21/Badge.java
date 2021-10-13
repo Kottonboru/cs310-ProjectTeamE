@@ -4,19 +4,22 @@ package edu.jsu.mcis.cs310.tas_fa21;
 
 public class Badge {
 
-    private String identification;
-    private String descriptions;
-    private final String id;
-    private final String description;
+    private String id;
+    private String description;
 
     public Badge(String id, String description) {
         this.id = id;
         this.description = description;
     }
-    public String getIdentification() {
+    
+    public Badge(String id){
+        this.id = id;
+    }
+    
+    public String getId() {
         return id;
     }
-    public String getDescriptions() {
+    public String getDescription() {
         return description;
     }
     
