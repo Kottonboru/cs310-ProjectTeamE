@@ -1,46 +1,43 @@
-
 package edu.jsu.mcis.cs310.tas_fa21;
 
-
 import java.sql.*;
+import java.time.*;
 
-/**
- *
- * @author keeskothemagician
- */
 public class Punch {
-    //private string adjustmenttype;
-    private int punchId;
+    
+    private int id;
     private int terminalid;
-    private Badge badgeid;
-    private Timestamp originaltimestamp;
-    PunchType punchtype;
-// old punch
-    public Punch(int punchId, int terminalid, Badge badgeid, int punchtypeid, Timestamp originaltimestamp) {
-        //this.adjustmenttype = adjustmenttype;
-        this.punchId = punchId;
+    private Badge badge;
+    private LocalDateTime originaltimestamp;
+    private PunchType punchtype;
+    
+
+    public Punch(int id, int terminalid, Badge badge, PunchType punchtypeid, LocalDateTime originaltimestamp) {
+ 
+        this.id = id;
         this.terminalid = terminalid;
-        this.badgeid = badgeid;
-        this.punchtype = PunchType.values()[punchtypeid];
+        this.badge = badge;
+        this.punchtype = punchtypeid;
         this.originaltimestamp = originaltimestamp;
+        
     }
-// new punch
-    public Punch(int terminalid, Badge badgeid, int punchtypeid, Timestamp originaltimestamp) {
+
+    public Punch(int terminalid, Badge badgeid, int punchtypeid, LocalDateTime originaltimestamp) {
         this.terminalid = terminalid;
-        this.badgeid = badgeid;
+        this.badge = badgeid;
         this.punchtype = PunchType.values()[punchtypeid]; 
         this.originaltimestamp = originaltimestamp;
     }
 
     public int getPunchId() {
-        return punchId;
+        return id;
     }
 
     public void setPunchId(int id) {
-        this.punchId = punchId;
+        this.id = id;
     }
 
-    public Timestamp getOriginaltimestamp() {
+    public LocalDateTime getOriginaltimestamp() {
         return originaltimestamp;
     }
 
@@ -50,7 +47,7 @@ public class Punch {
     //public void setAdjustmenttype(string adjustmenttype) {
     //this.adjustmenttype = adjustmenttype;
     //}
-    public void setOriginaltimestamp(Timestamp originaltimestamp) {
+    public void setOriginaltimestamp(LocalDateTime originaltimestamp) {
         this.originaltimestamp = originaltimestamp;
     }
 
@@ -62,12 +59,12 @@ public class Punch {
         this.terminalid = terminalid;
     }
 
-    public Badge getBadgeId() {
-        return badgeid;
+    public Badge getBadge() {
+        return badge;
     }
 
-    public void setBadgeId(Badge badge) {
-        this.badgeid = badgeid;
+    public void setBadge(Badge badge) {
+        this.badge = badge;
     }
 
     public PunchType getPunchtype() {
@@ -75,7 +72,7 @@ public class Punch {
     }
     
     public String printOriginal(){
-        return "#" + badgeid + " " + punchtype + ": " + originaltimestamp;
+        return "#" + badge + " " + punchtype + ": " + originaltimestamp;
     }
 
 }

@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.time.*;
 
 
+
 public class TASDatabase {
     
     Connection conn = null;
@@ -21,7 +22,7 @@ public class TASDatabase {
 
             /* Identify the Server */
         
-            String server = ("jdbc:mysql://localhost/tas_fa21_v1");
+            String server = ("jdbc:mysql://localhost/tas_fa21_v1?serverTimezone=America/Chicago");
             String username = "tasuser";
             String password = "teame";
             System.out.println("Connecting to " + server + "...");
@@ -61,57 +62,74 @@ public class TASDatabase {
     }
     
     public Badge getBadge(String badgeid){
+        
+        Badge b = null;
+        
         try{
             
             pstSelect = conn.prepareStatement("SELECT * FROM badge where id = ?");
             
             pstSelect.setString(1, badgeid);
             
-            pstSelect.execute();
-            resultset = pstSelect.getResultSet();
-            resultset.first();
+            boolean hasresults = pstSelect.execute();
             
+            if (hasresults) {
             
-            //Results
-            String idNum = resultset.getString(1);
-            String name = resultset.getString(2);
-            
-            Badge b = new Badge(idNum, name);
-            
-            return b;
+                resultset = pstSelect.getResultSet();
+                resultset.first();
+
+                String id = resultset.getString("id");
+                String description = resultset.getString("description");
+
+                b = new Badge(id, description);
+                
+            }
+
         }
         
         catch(Exception e){
             System.err.println("** getBadge: " + e.toString());
         }
         
-        return null;
+        return b;
+        
     }
     
     public Punch getPunch(int punchid) {
-        Timestamp originalTimeStamp = null;
+        
         Punch p = null;
         
         try {
             pstSelect = conn.prepareStatement("select * from punch where id=?");
+            pstSelect.setInt(1, punchid);
             
-            pstSelect.execute();
-            resultset = pstSelect.getResultSet();
+            boolean hasresult = pstSelect.execute();
             
-            resultset.first();
-            int punchID = resultset.getInt(1);
-            int punchTerminalID = resultset.getInt(2);
-            String punchBadgeID = resultset.getString(3);
-            Badge punchBadge = new Badge(punchBadgeID);
-            originalTimeStamp = resultset.getTimestamp(4);
-            int punchTypeID = resultset.getInt(5);
+            if (hasresult) {
+                
+                System.err.println("Getting punch data ...");
+
+                resultset = pstSelect.getResultSet();
+
+                resultset.first();
+                int id = resultset.getInt("id");
+                int terminalid = resultset.getInt("terminalid");
+                String badgeid = resultset.getString("badgeid");
+                Badge badge = getBadge(badgeid);
+                
+                java.time.LocalDateTime originaltimestamp = resultset.getTimestamp("originaltimestamp").toLocalDateTime();
+
+                PunchType punchtype = PunchType.values()[resultset.getInt("punchtypeid")];
+
+                //Punch(int id, int terminalid, Badge badge, int punchtypeid, Timestamp originaltimestamp
+                p = new Punch(id, terminalid, badge, punchtype, originaltimestamp);
+                
+            }
             
-            //Punch(int id, int terminalid, Badge badge, int punchtypeid, Timestamp originaltimestamp
-            p = new Punch(punchID, punchTerminalID, punchBadge, punchTypeID, originalTimeStamp);
         }
         
         catch(Exception e) {
-            System.err.println("** getPunch: " + e.toString());
+            e.printStackTrace();
         }
         
         return p;
@@ -143,6 +161,9 @@ public class TASDatabase {
     }
     
     public Shift getShift(Badge b) {
+        
+        Shift s = null;
+        
         try {
             pstSelect = conn.prepareStatement("select * from employee where id=1");
             
@@ -155,14 +176,17 @@ public class TASDatabase {
             //Results
             String idNum = resultset.getString(1);
             
-            b = new Badge(idNum);
-            int badgeId = b.getId();
-            return ;
+            //b = new Badge(idNum);
+            //int badgeId = b.getId();
+            //return ;
         }
         
         catch(Exception e) {
             System.err.println("** getShift: " + e.toString());
         }
-        return null;
+        
+        return s;
+        
     }
+        
 }
