@@ -4,13 +4,13 @@ import java.time.*;
 
 public class Shift {
     
-    private int id;
+    private int iD;
     private String description;
-    private LocalTime start;
-    private LocalTime stop;
+    private LocalTime shiftStart;
+    private LocalTime shiftStop;
     private int interval;
     private int gracePeriod;
-    private int doc;
+    private int dock;
     private LocalTime lunchStart;
     private LocalTime lunchStop;
     private int lunchDeduct;
@@ -18,15 +18,15 @@ public class Shift {
     private int shiftDuration;
 
     public Shift(int id, String description, LocalTime start, LocalTime stop, int interval, 
-            int gracePeriod, int doc, LocalTime lunchStart, LocalTime lunchStop, int lunchDeduct, 
+            int gracePeriod, int dock, LocalTime lunchStart, LocalTime lunchStop, int lunchDeduct, 
             int lunchDuration, int shiftDuration) {
-        this.id = id;
+        this.iD = iD;
         this.description = description;
-        this.start = start;
-        this.stop = stop;
+        this.shiftStart = start;
+        this.shiftStop = stop;
         this.interval = interval;
         this.gracePeriod = gracePeriod;
-        this.doc = doc;
+        this.dock = dock;
         this.lunchStart = lunchStart;
         this.lunchStop = lunchStop;
         this.lunchDeduct = lunchDeduct;
@@ -34,15 +34,15 @@ public class Shift {
         this.shiftDuration = Duration.between(start, stop).toMinutesPart();
     }
     public Shift(int id){
-        this.id=id;
+        this.iD=iD;
     }
     
     public int getId() {
-        return id;
+        return iD;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.iD = iD;
     }
 
     public String getDescription() {
@@ -54,19 +54,19 @@ public class Shift {
     }
 
     public LocalTime getStart() {
-        return start;
+        return shiftStart;
     }
 
     public void setStart(LocalTime start) {
-        this.start = start;
+        this.shiftStart = start;
     }
 
     public LocalTime getStop() {
-        return stop;
+        return shiftStop;
     }
 
     public void setStop(LocalTime stop) {
-        this.stop = stop;
+        this.shiftStop = stop;
     }
 
     public int getInterval() {
@@ -85,12 +85,12 @@ public class Shift {
         this.gracePeriod = gracePeriod;
     }
 
-    public int getDoc() {
-        return doc;
+    public int getDock() {
+        return dock;
     }
 
-    public void setDoc(int doc) {
-        this.doc = doc;
+    public void setDock(int dock) {
+        this.dock = dock;
     }
 
     public LocalTime getLunchStart() {
@@ -136,7 +136,7 @@ public class Shift {
     @Override
     public String toString()
     {
-        return description + ": " + start + " - " + " (" + shiftDuration + " minutes); Lunch: " + 
+        return description + ": " + shiftStart + " - " + " (" + shiftDuration + " minutes); Lunch: " + 
                lunchStart + " - " + lunchStop + " (" + lunchDuration + " minutes)";
     }
     
