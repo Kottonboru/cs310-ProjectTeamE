@@ -69,7 +69,8 @@ public class TASDatabase {
                 String id = resultset.getString("id");
                 String description = resultset.getString("description");
 
-        
+                b = new Badge(id, description);
+
                 
             }
 
@@ -124,16 +125,17 @@ public class TASDatabase {
     }
     
     
-    public Shift getShift(String shiftId) {
+    public Shift getShift(int shiftId) {
         
         Shift s= null; 
         
         try {
+
             pstSelect = conn.prepareStatement("select * from employee where id=?");
             
-            pstSelect.setString(1, shiftId);
+            pstSelect.setInt(1, shiftId);
             
-             boolean hasresult = pstSelect.execute();
+            boolean hasresult = pstSelect.execute();
              
              if(hasresult) {
                  
@@ -142,17 +144,20 @@ public class TASDatabase {
             
             //Results
             String description = resultset.getString("description");
-                        LocalTime shiftStart = LocalTime.parse(resultset.getString("Lunchstart"));
-                        LocalTime shiftStop = LocalTime.parse(resultset.getString("Lunchstop"));
+                        LocalTime shiftStart = LocalTime.parse(resultset.getString("tart"));
+                        LocalTime shiftStop = LocalTime.parse(resultset.getString("stop"));
                         int interval = resultset.getInt("interval");
-                        int gracePeriod = resultset.getInt("gracPeriod");
+                        int gracePeriod = resultset.getInt("graceperiod");
                         int dock = resultset.getInt("dock");
                         LocalTime lunchStart = LocalTime.parse(resultset.getString("lunchstart"));
                         LocalTime lunchStop = LocalTime.parse(resultset.getString("lunchstop"));
                         int lunchDeduct = resultset.getInt("lunchdeduct");
+                        int lunchDuration = resultset.getInt("lunchduration");
+                        int shiftDuration = resultset.getInt("shiftduration");
                         
-                       s = new Shift(shiftId, description, shiftStart, shiftStop, interval, gracePeriod, dock, lunchStart, lunchStop, lunchDeduct);
-        
+                       s = new Shift( shiftId, description, shiftStart, shiftStop, interval, 
+                               gracePeriod, dock, lunchStart, lunchStop, lunchDeduct, lunchDuration, shiftDuration);
+
             }
         }
         
