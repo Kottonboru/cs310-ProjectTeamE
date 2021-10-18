@@ -3,6 +3,7 @@ package edu.jsu.mcis.cs310.tas_fa21;
 import java.sql.*;
 import java.sql.Connection;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 
 
@@ -85,6 +86,8 @@ public class TASDatabase {
     }
     
     public Punch getPunch(int punchid) {
+        
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("EEE MM-dd-yyyy HH:mm:ss");
         
         Punch p = null;
         

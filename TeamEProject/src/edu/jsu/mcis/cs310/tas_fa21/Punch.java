@@ -2,8 +2,10 @@ package edu.jsu.mcis.cs310.tas_fa21;
 
 import java.sql.*;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 public class Punch {
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("EEE MM/dd/yyyy HH:mm:ss");
     
     private int id;
     private int terminalid;
@@ -72,7 +74,16 @@ public class Punch {
     }
     
     public String printOriginal(){
-        return "#" + badge + " " + punchtype + ": " + originaltimestamp;
+        
+        // #D2C39273 CLOCK IN: WED 09/05/2018 07:00:07
+        
+        StringBuilder s = new StringBuilder();
+        
+        s.append('#').append(badge.getId()).append(' ');
+        s.append(punchtype).append(": ").append(originaltimestamp.format(dtf));
+        
+        return s.toString().toUpperCase();
+        
     }
 
 }
