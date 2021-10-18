@@ -10,7 +10,6 @@ public class TASDatabase {
     
     Connection conn = null;
     PreparedStatement pstSelect = null, pstUpdate = null;
-    ResultSet resultset = null;
     ResultSetMetaData metadata = null;
     
     boolean hasresults;
@@ -29,7 +28,7 @@ public class TASDatabase {
 
             /* Load the MySQL JDBC Driver */
         
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         
             /* Open Connection */
 
@@ -48,17 +47,6 @@ public class TASDatabase {
             System.err.println(e.toString());
         }
         
-        // Close Database Objects
-        
-        finally {
-            
-            if (resultset != null) { try { resultset.close(); resultset = null;} catch (Exception e ) {} }
-            
-            if (pstSelect != null) { try { pstSelect.close(); pstSelect = null;} catch (Exception e ) {} }
-            
-            if (pstUpdate != null) { try { pstUpdate.close(); pstUpdate = null;} catch (Exception e ) {} }
-            
-        }
     }
     
     public Badge getBadge(String badgeid){
@@ -75,13 +63,14 @@ public class TASDatabase {
             
             if (hasresults) {
             
-                resultset = pstSelect.getResultSet();
+                ResultSet resultset = pstSelect.getResultSet();
                 resultset.first();
 
                 String id = resultset.getString("id");
                 String description = resultset.getString("description");
 
-                b = new Badge(id, description);
+             
+              
                 
             }
 
@@ -91,7 +80,7 @@ public class TASDatabase {
             System.err.println("** getBadge: " + e.toString());
         }
         
-        return b;
+       return b;
         
     }
     
@@ -109,9 +98,10 @@ public class TASDatabase {
                 
                 System.err.println("Getting punch data ...");
 
-                resultset = pstSelect.getResultSet();
+                ResultSet resultset = pstSelect.getResultSet();
 
                 resultset.first();
+                
                 int id = resultset.getInt("id");
                 int terminalid = resultset.getInt("terminalid");
                 String badgeid = resultset.getString("badgeid");
@@ -136,28 +126,45 @@ public class TASDatabase {
     }
     
     
-    public Shift getShift(String shiftID) {
+    public Shift getShift(String shiftId) {
+        
+        Shift s= null; 
+        
         try {
             pstSelect = conn.prepareStatement("select * from employee where id=7");
             
-            pstSelect.setString(7, shiftID);
+            pstSelect.setString(1, shiftId);
             
-            pstSelect.execute();
-            resultset = pstSelect.getResultSet();
+             boolean hasresult = pstSelect.execute();
+             
+             if(hasresult) {
+                 
+            ResultSet resultset = pstSelect.getResultSet();
             resultset.first();
             
             //Results
-            int idNum = resultset.getInt(7);
+            String description = resultset.getString("description");
+                        LocalTime shiftStart = LocalTime.parse(resultset.getString("Lunchstart"));
+                        LocalTime shiftStop = LocalTime.parse(resultset.getString("Lunchstop"));
+                        int interval = resultset.getInt("interval");
+                        int gracePeriod = resultset.getInt("gracPeriod");
+                        int dock = resultset.getInt("dock");
+                        LocalTime lunchStart = LocalTime.parse(resultset.getString("lunchstart"));
+                        LocalTime lunchStop = LocalTime.parse(resultset.getString("lunchstop"));
+                        int lunchDeduct = resultset.getInt("lunchdeduct");
+                        
+                       s = new Shift( badge, description, shiftStart, shiftStop, interval, gracePeriod, dock, lunchStart, lunchStop, lunchDeduct);
             
-            Shift s = new Shift(idNum);
+            
    
-            return s;
+            
+            }
         }
         
         catch(Exception e) {
             System.err.println("** getShift: " + e.toString());
         }
-        return null;
+        return s;
     }
     
     public Shift getShift(Badge b) {
@@ -169,16 +176,26 @@ public class TASDatabase {
             
             //pstSelect.setString(1, b);
             
-            pstSelect.execute();
-            resultset = pstSelect.getResultSet();
+             boolean hasresult = pstSelect.execute();
+             
+              if (hasresult) {
+            ResultSet resultset = pstSelect.getResultSet();
             resultset.first();
             
             //Results
-            String idNum = resultset.getString(1);
+            String badge = resultset.getString(1);
             
+            String badgeid = resultset.getString("badgeid");
+            
+            b =new Badge (badgeid);
+            
+             
             //b = new Badge(idNum);
             //int badgeId = b.getId();
             //return ;
+      
+            }
+              
         }
         
         catch(Exception e) {
