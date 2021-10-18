@@ -69,8 +69,7 @@ public class TASDatabase {
                 String id = resultset.getString("id");
                 String description = resultset.getString("description");
 
-             
-              
+        
                 
             }
 
@@ -99,7 +98,6 @@ public class TASDatabase {
                 System.err.println("Getting punch data ...");
 
                 ResultSet resultset = pstSelect.getResultSet();
-
                 resultset.first();
                 
                 int id = resultset.getInt("id");
@@ -131,7 +129,7 @@ public class TASDatabase {
         Shift s= null; 
         
         try {
-            pstSelect = conn.prepareStatement("select * from employee where id=7");
+            pstSelect = conn.prepareStatement("select * from employee where id=?");
             
             pstSelect.setString(1, shiftId);
             
@@ -153,11 +151,8 @@ public class TASDatabase {
                         LocalTime lunchStop = LocalTime.parse(resultset.getString("lunchstop"));
                         int lunchDeduct = resultset.getInt("lunchdeduct");
                         
-                       s = new Shift( badge, description, shiftStart, shiftStop, interval, gracePeriod, dock, lunchStart, lunchStop, lunchDeduct);
-            
-            
-   
-            
+                       s = new Shift(shiftId, description, shiftStart, shiftStop, interval, gracePeriod, dock, lunchStart, lunchStop, lunchDeduct);
+        
             }
         }
         
