@@ -135,35 +135,32 @@ public class TASDatabase {
         
         try {
             pstSelect = conn.prepareStatement("SELECT * from shift where id = ?");
-            
             pstSelect.setInt(1, shiftId);
             
             boolean hasresult = pstSelect.execute();
              
-             if(hasresult) {
+            if(hasresult) {
+                
+                System.err.println("Getting shift data ...");
                  
-            ResultSet resultset = pstSelect.getResultSet();
-            resultset.first();
-            
-            //Results
-            String description = resultset.getString("description");
-                        LocalTime shiftStart = LocalTime.parse(resultset.getString("tart"));
-                        LocalTime shiftStop = LocalTime.parse(resultset.getString("stop"));
-                        int interval = resultset.getInt("interval");
-                        int gracePeriod = resultset.getInt("graceperiod");
-                        int dock = resultset.getInt("dock");
-                        LocalTime lunchStart = LocalTime.parse(resultset.getString("lunchstart"));
-                        LocalTime lunchStop = LocalTime.parse(resultset.getString("lunchstop"));
-                        int lunchDeduct = resultset.getInt("lunchdeduct");
-                        int lunchDuration = resultset.getInt("lunchduration");
-                        int shiftDuration = resultset.getInt("shiftduration");
-                        
-                       s = new Shift( shiftId, description, shiftStart, shiftStop, interval, 
-                               gracePeriod, dock, lunchStart, lunchStop, lunchDeduct, lunchDuration, shiftDuration);
-            
-            
-   
-            
+                ResultSet resultset = pstSelect.getResultSet();
+                
+                resultset.first();
+
+                //Results
+                String description = resultset.getString("description");
+                LocalTime shiftStart = LocalTime.parse(resultset.getString("start"));
+                LocalTime shiftStop = LocalTime.parse(resultset.getString("stop"));
+                int interval = resultset.getInt("interval");
+                int gracePeriod = resultset.getInt("graceperiod");
+                int dock = resultset.getInt("dock");
+                LocalTime lunchStart = LocalTime.parse(resultset.getString("lunchstart"));
+                LocalTime lunchStop = LocalTime.parse(resultset.getString("lunchstop"));
+                int lunchDeduct = resultset.getInt("lunchdeduct");
+
+
+                s = new Shift(shiftId, description, shiftStart, shiftStop, interval, 
+                              gracePeriod, dock, lunchStart, lunchStop, lunchDeduct);
             }
         }
         

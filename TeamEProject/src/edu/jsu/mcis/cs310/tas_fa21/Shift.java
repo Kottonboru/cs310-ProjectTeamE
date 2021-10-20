@@ -1,6 +1,7 @@
 package edu.jsu.mcis.cs310.tas_fa21;
 
 import java.time.*;
+import static java.time.temporal.ChronoUnit.MINUTES;
 
 public class Shift {
     
@@ -18,8 +19,7 @@ public class Shift {
     private int shiftDuration;
 
     public Shift(int id, String description, LocalTime start, LocalTime stop, int interval, 
-            int gracePeriod, int doc, LocalTime lunchStart, LocalTime lunchStop, int lunchDeduct, 
-            int lunchDuration, int shiftDuration) {
+            int gracePeriod, int doc, LocalTime lunchStart, LocalTime lunchStop, int lunchDeduct) {
         this.id = id;
         this.description = description;
         this.start = start;
@@ -30,11 +30,8 @@ public class Shift {
         this.lunchStart = lunchStart;
         this.lunchStop = lunchStop;
         this.lunchDeduct = lunchDeduct;
-        this.lunchDuration = Duration.between(lunchStart, lunchStop).toMinutesPart();
-        this.shiftDuration = Duration.between(start, stop).toMinutesPart();
-    }
-    public Shift(int id){
-        this.id=id;
+        this.lunchDuration = (int) MINUTES.between(lunchStart, lunchStop);
+        this.shiftDuration = (int) MINUTES.between(start, stop);
     }
     
     public int getId() {
@@ -121,23 +118,33 @@ public class Shift {
         return lunchDuration;
     }
 
-    public void setLunchDuration(int lunchDuration) {
-        this.lunchDuration = lunchDuration;
-    }
+    /*public void setLunchDuration(int lunchDuration) {
+        this.lunchDuration = Duration.between(lunchStart, lunchStop).toMinutesPart();
+    }*/
 
     public int getShiftDuration() {
         return shiftDuration;
     }
 
-    public void setShiftDuration(int shiftDuration) {
-        this.shiftDuration = shiftDuration;
-    }
+    /*public void setShiftDuration(int shiftDuration) {
+        this.shiftDuration = Duration.between(start, stop).toMinutesPart();
+    }*/
+    
+    //Shift 1: 07:00 - 15:30 (510 minutes); Lunch: 12:00 - 12:30 (30 minutes)
     
     @Override
     public String toString()
     {
-        return description + ": " + start + " - " + " (" + shiftDuration + " minutes); Lunch: " + 
-               lunchStart + " - " + lunchStop + " (" + lunchDuration + " minutes)";
+        StringBuilder s = new StringBuilder();
+        
+        s.append(description).append(": ").append(start);
+        s.append(" - ").append(stop).append(" (").append(shiftDuration);
+        s.append(" minutes); Lunch: ").append(lunchStart).append(" - ");
+        s.append(lunchStop).append(" (").append(lunchDuration).append(" minutes)");
+        
+        
+        return s.toString();
+
     }
     
     
