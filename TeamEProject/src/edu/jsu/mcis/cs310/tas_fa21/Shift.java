@@ -19,13 +19,13 @@ public class Shift {
     private int shiftDuration;
 
     public Shift(int id, String description, LocalTime start, LocalTime stop, int interval, 
-            int gracePeriod, int doc, LocalTime lunchStart, LocalTime lunchStop, int lunchDeduct) {
+            int gracePeriod, int dock, LocalTime lunchStart, LocalTime lunchStop, int lunchDeduct) {
         this.id = id;
         this.description = description;
         this.start = start;
         this.stop = stop;
         this.interval = interval;
-        this.gracePeriod = graceperiod;
+        this.gracePeriod = gracePeriod;
         this.dock = dock;
         this.lunchStart = lunchStart;
         this.lunchStop = lunchStop;

@@ -136,7 +136,7 @@ public class TASDatabase {
         
         try {
             pstSelect = conn.prepareStatement("SELECT * from shift where id = ?");
-            pstSelect.setInt(1, shiftId);
+            pstSelect.setInt(1, id);
             
             boolean hasresult = pstSelect.execute();
              
@@ -160,7 +160,7 @@ public class TASDatabase {
                 int lunchDeduct = resultset.getInt("lunchdeduct");
 
 
-                s = new Shift(shiftId, description, shiftStart, shiftStop, interval, 
+                s = new Shift(id, description, shiftStart, shiftStop, interval, 
                               gracePeriod, dock, lunchStart, lunchStop, lunchDeduct);
             }
         }
