@@ -224,11 +224,11 @@ public class TASDatabase {
 
     // get punch data from punch object
         int results = 0;
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         LocalDateTime originalTime = p.getOriginaltimestamp();
-        String otsString = originalTime.format(dtf);
-        System.err.println("New Punch Timestamp (from insertPunch(): " + otsString);
+        //String otsString = originalTime.format(dtf);
+        //System.err.println("New Punch Timestamp (from insertPunch(): " + otsString);
         String badgeid = p.getBadgeId(); 
         int terminalid = p.getTerminalid(); 
         PunchType punchtypeid = p.getPunchtype();
@@ -242,7 +242,7 @@ public class TASDatabase {
             pstUpdate = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             pstUpdate.setInt(1, terminalid);
             pstUpdate.setString(2, badgeid);
-            pstUpdate.setString(3, otsString);
+            pstUpdate.setTimestamp(3, java.sql.Timestamp.valueOf(originalTime));
             pstUpdate.setInt(4, punchtypeid.ordinal());
 
             // Execute Update Query
@@ -256,9 +256,7 @@ public class TASDatabase {
                     results = resultset.getInt(1);
                 }
             }
-
         }
-
         catch(Exception e) {
             e.printStackTrace();
         }
@@ -291,8 +289,6 @@ public class TASDatabase {
                 ResultSet resultset = pstSelect.getResultSet();
                 
                 while (resultset.next()) {
-                    
-                    // Punch(int id, int terminalid, Badge badge, PunchType punchtypeid, LocalDateTime originaltimestamp)
                     
                     int id = resultset.getInt("id");
                     int terminalid = resultset.getInt("terminalid");
