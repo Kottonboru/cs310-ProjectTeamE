@@ -10,7 +10,6 @@ public class Punch {
     private int id;
     private int terminalid;
     private Badge badge;
-    private String badgeid;
     private LocalDateTime originaltimestamp;
     private PunchType punchtype;
     
@@ -29,12 +28,13 @@ public class Punch {
         this.terminalid = terminalid;
         this.badge = badge;
         this.punchtype = PunchType.values()[punchtypeid];
+        this.originaltimestamp = LocalDateTime.now();
     }
 
     //new punch
-    public Punch(int terminalid, String badgeid, LocalDateTime originaltimestamp, int punchtypeid) {
+    public Punch(int terminalid, Badge badgeid, LocalDateTime originaltimestamp, int punchtypeid) {
         this.terminalid = terminalid;
-        this.badgeid = badge.getId();
+        this.badge = badge;
         this.punchtype = PunchType.values()[punchtypeid]; 
         this.originaltimestamp = originaltimestamp;
     }
@@ -75,10 +75,6 @@ public class Punch {
 
     public void setBadge(Badge badge) {
         this.badge = badge;
-    }
-    
-    public String getBadgeId() {
-        return badgeid;
     }
 
     public PunchType getPunchtype() {
