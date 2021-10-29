@@ -3,6 +3,9 @@ package edu.jsu.mcis.cs310.tas_fa21;
 import java.sql.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalField;
+import java.time.temporal.WeekFields;
+import java.util.*;
 
 public class Punch {
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("EEE MM/dd/yyyy HH:mm:ss");
@@ -95,10 +98,36 @@ public class Punch {
     }
     
     public void adjust(Shift s) {
+        
+        
+        TemporalField usWeekDay = WeekFields.of(Locale.US).dayOfWeek();
+        int dayofweek = originaltimestamp.get(usWeekDay);
+        
         LocalDateTime shiftStart = s.getStart().atDate(originaltimestamp.toLocalDate());
         LocalDateTime shiftStop = s.getStop().atDate(originaltimestamp.toLocalDate());
         LocalDateTime lunchStart = s.getLunchStart().atDate(originaltimestamp.toLocalDate());
         LocalDateTime lunchStop = s.getLunchStop().atDate(originaltimestamp.toLocalDate());
+        
+        
+        if (dayofweek != Calendar.SATURDAY && dayofweek != Calendar.SUNDAY) {
+              
+            
+        
+            if (punchtype == PunchType.CLOCK_IN) {
+            
+            
+            
+            }
+            
+            else if (punchtype == PunchType.CLOCK_OUT) {
+                
+            }
+        }
+        
+        //adjustments that apply on weekends
+    
+    
+    
     }
 
 }
