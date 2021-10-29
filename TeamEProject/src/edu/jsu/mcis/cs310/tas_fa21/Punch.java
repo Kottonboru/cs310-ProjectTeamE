@@ -93,5 +93,12 @@ public class Punch {
         return s.toString().toUpperCase();
         
     }
+    
+    public void adjust(Shift s) {
+        LocalDateTime shiftStart = s.getStart().atDate(originaltimestamp.toLocalDate());
+        LocalDateTime shiftStop = s.getStop().atDate(originaltimestamp.toLocalDate());
+        LocalDateTime lunchStart = s.getLunchStart().atDate(originaltimestamp.toLocalDate());
+        LocalDateTime lunchStop = s.getLunchStop().atDate(originaltimestamp.toLocalDate());
+    }
 
 }

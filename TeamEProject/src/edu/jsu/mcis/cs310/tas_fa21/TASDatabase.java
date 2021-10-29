@@ -4,8 +4,8 @@ import java.sql.*;
 import java.sql.Connection;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 import java.util.*;
 
 
@@ -207,7 +207,7 @@ public class TASDatabase {
                         
                 }
               
-            }
+        }
 
         catch(Exception e) {
             System.err.println("** getShift: " + e.toString());
@@ -262,7 +262,7 @@ public class TASDatabase {
         }
         System.err.println("New Punch ID: " + results);
         return results;              
-}
+    }
         
         
     public ArrayList<Punch> getDailyPunchList(Badge badge, LocalDate date) {
