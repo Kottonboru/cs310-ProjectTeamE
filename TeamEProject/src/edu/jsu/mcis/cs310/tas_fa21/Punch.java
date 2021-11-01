@@ -107,19 +107,58 @@ public class Punch {
         LocalDateTime shiftStop = s.getStop().atDate(originaltimestamp.toLocalDate());
         LocalDateTime lunchStart = s.getLunchStart().atDate(originaltimestamp.toLocalDate());
         LocalDateTime lunchStop = s.getLunchStop().atDate(originaltimestamp.toLocalDate());
+       
+        LocalDateTime shiftStartInterval = shiftStart.minusMinutes(s.getInterval());
+        LocalDateTime shiftStartGrace = shiftStart.plusMinutes(s.getGracePeriod());
+        LocalDateTime shiftStartDock = shiftStart.plusMinutes(s.getDock());
+        
+        LocalDateTime shiftStopInterval = shiftStop.plusMinutes(s.getInterval());
+        LocalDateTime shiftStopGrace = shiftStop.minusMinutes(s.getGracePeriod());
+        LocalDateTime shiftStopDock = shiftStop.minusMinutes(s.getDock());
+        
         
         
         if (dayofweek != Calendar.SATURDAY && dayofweek != Calendar.SUNDAY) {
               
-            
-        
+           
             if (punchtype == PunchType.CLOCK_IN) {
-            
+                //Interval
+                if (originaltimestamp.isAfter(shiftStartInterval) && originaltimestamp.isBefore(shiftStart)){
+                    
+                }
+                //Dock
+                else if (originaltimestamp.isBefore(shiftStartDock) && originaltimestamp.isAfter(shiftStart)){
+                
+                }
+                //Grace
+                else if (originaltimestamp.isBefore(shiftStartGrace) && originaltimestamp.isAfter(shiftStart)){
+                    
+                }
+                //Lunch
+                else if (originaltimestamp.isBefore(lunchStop) && originaltimestamp.isAfter(lunchStart)){
+                    
+                }
             
             
             }
             
             else if (punchtype == PunchType.CLOCK_OUT) {
+                //Interval
+                if (originaltimestamp.isBefore(shiftStopInterval) && originaltimestamp.isAfter(shiftStop)){
+                    
+                }
+                //Dock
+                else if (originaltimestamp.isAfter(shiftStopDock) && originaltimestamp.isBefore(shiftStop)){
+                
+                }
+                //Grace
+                else if (originaltimestamp.isAfter(shiftStopGrace) && originaltimestamp.isBefore(shiftStop)){
+                    
+                }
+                //Lunch
+                else if (originaltimestamp.isBefore(lunchStop) && originaltimestamp.isAfter(lunchStart)){
+                    
+                }
                 
             }
         }
