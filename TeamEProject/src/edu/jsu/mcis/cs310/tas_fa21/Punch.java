@@ -118,46 +118,46 @@ public class Punch {
         
         
         
+        
+        
         if (dayofweek != Calendar.SATURDAY && dayofweek != Calendar.SUNDAY) {
               
            
             if (punchtype == PunchType.CLOCK_IN) {
                 //Interval
                 if (originaltimestamp.isAfter(shiftStartInterval) && originaltimestamp.isBefore(shiftStart)){
-                    
+                    originaltimestamp.adjustInto(shiftStart);
                 }
                 //Dock
-                else if (originaltimestamp.isBefore(shiftStartDock) && originaltimestamp.isAfter(shiftStart)){
-                
+                else if (originaltimestamp.isBefore(shiftStartDock) && originaltimestamp.isAfter(shiftStartGrace)){
+                    originaltimestamp.adjustInto(shiftStartDock);
                 }
                 //Grace
                 else if (originaltimestamp.isBefore(shiftStartGrace) && originaltimestamp.isAfter(shiftStart)){
-                    
+                    originaltimestamp.adjustInto(shiftStart);
                 }
                 //Lunch
                 else if (originaltimestamp.isBefore(lunchStop) && originaltimestamp.isAfter(lunchStart)){
-                    
+                    originaltimestamp.adjustInto(lunchStop);
                 }
-            
-            
             }
             
             else if (punchtype == PunchType.CLOCK_OUT) {
                 //Interval
                 if (originaltimestamp.isBefore(shiftStopInterval) && originaltimestamp.isAfter(shiftStop)){
-                    
+                    originaltimestamp.adjustInto(shiftStop);
                 }
                 //Dock
-                else if (originaltimestamp.isAfter(shiftStopDock) && originaltimestamp.isBefore(shiftStop)){
-                
+                else if (originaltimestamp.isAfter(shiftStopDock) && originaltimestamp.isBefore(shiftStopGrace)){
+                    originaltimestamp.adjustInto(shiftStopDock);
                 }
                 //Grace
                 else if (originaltimestamp.isAfter(shiftStopGrace) && originaltimestamp.isBefore(shiftStop)){
-                    
+                    originaltimestamp.adjustInto(shiftStop);
                 }
                 //Lunch
                 else if (originaltimestamp.isBefore(lunchStop) && originaltimestamp.isAfter(lunchStart)){
-                    
+                    originaltimestamp.adjustInto(lunchStart);
                 }
                 
             }
