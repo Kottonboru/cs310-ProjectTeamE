@@ -14,6 +14,8 @@ public class Punch {
     private int terminalid;
     private Badge badge;
     private LocalDateTime originaltimestamp;
+    private LocalDateTime adjustedtimestamp;
+    private String adjustmenttype;
     private PunchType punchtype;
     
 //existing punch
@@ -102,6 +104,7 @@ public class Punch {
         
         TemporalField usWeekDay = WeekFields.of(Locale.US).dayOfWeek();
         int dayofweek = originaltimestamp.get(usWeekDay);
+        adjustmenttype = null;
         
         LocalDateTime shiftStart = s.getStart().atDate(originaltimestamp.toLocalDate());
         LocalDateTime shiftStop = s.getStop().atDate(originaltimestamp.toLocalDate());
@@ -116,6 +119,8 @@ public class Punch {
         LocalDateTime shiftStopGrace = shiftStop.minusMinutes(s.getGracePeriod());
         LocalDateTime shiftStopDock = shiftStop.minusMinutes(s.getDock());
         
+        int interval = s.getInterval();
+        
         
         
         
@@ -126,42 +131,67 @@ public class Punch {
             if (punchtype == PunchType.CLOCK_IN) {
                 //Interval
                 if (originaltimestamp.isAfter(shiftStartInterval) && originaltimestamp.isBefore(shiftStart)){
-                    originaltimestamp.adjustInto(shiftStart);
+                    adjustedtimestamp = shiftStart;
+                    adjustmenttype = "Shift Start";
                 }
                 //Dock
                 else if (originaltimestamp.isBefore(shiftStartDock) && originaltimestamp.isAfter(shiftStartGrace)){
-                    originaltimestamp.adjustInto(shiftStartDock);
+                    adjustedtimestamp = shiftStartDock;
+                    adjustmenttype = "Shift Dock";
                 }
                 //Grace
                 else if (originaltimestamp.isBefore(shiftStartGrace) && originaltimestamp.isAfter(shiftStart)){
-                    originaltimestamp.adjustInto(shiftStart);
+                    adjustedtimestamp = shiftStart;
+                    adjustmenttype = "Shift Start";
                 }
                 //Lunch
                 else if (originaltimestamp.isBefore(lunchStop) && originaltimestamp.isAfter(lunchStart)){
-                    originaltimestamp.adjustInto(lunchStop);
+                    adjustedtimestamp = lunchStop;
+                    adjustmenttype = "Lunch Stop";
                 }
             }
             
             else if (punchtype == PunchType.CLOCK_OUT) {
                 //Interval
                 if (originaltimestamp.isBefore(shiftStopInterval) && originaltimestamp.isAfter(shiftStop)){
-                    originaltimestamp.adjustInto(shiftStop);
+                    adjustedtimestamp = shiftStop;
+                    adjustmenttype = "Shift Stop";
                 }
                 //Dock
                 else if (originaltimestamp.isAfter(shiftStopDock) && originaltimestamp.isBefore(shiftStopGrace)){
-                    originaltimestamp.adjustInto(shiftStopDock);
+                    adjustedtimestamp = shiftStopDock;
+                    adjustmenttype = "Shift Dock";
                 }
                 //Grace
                 else if (originaltimestamp.isAfter(shiftStopGrace) && originaltimestamp.isBefore(shiftStop)){
-                    originaltimestamp.adjustInto(shiftStop);
+                    adjustedtimestamp = shiftStop;
+                    adjustmenttype = "Shift Stop";
                 }
                 //Lunch
                 else if (originaltimestamp.isBefore(lunchStop) && originaltimestamp.isAfter(lunchStart)){
-                    originaltimestamp.adjustInto(lunchStart);
+                    adjustedtimestamp = lunchStart;
+                    adjustmenttype = "Lunch Start";
                 }
                 
             }
         }
+        
+        if (((punchtype == PunchType.CLOCK_IN || punchtype == PunchType.CLOCK_OUT)) && adjustmenttype == null) {
+            
+            if (originaltimestamp.getMinute() % interval != 0) {
+               
+                //add or subtract minutes from originaltimestamp = adjustedtimestamp (to round it up or down)
+                //adjustmenttype = "Interval"
+            }
+                
+            else {
+                //adjustmenttype = "None"
+                //reset seconds/nanoseconds from originaltimestamp = adjustedtimestamp to zero
+            }
+                
+            
+        }
+        
         
         //adjustments that apply on weekends
     
