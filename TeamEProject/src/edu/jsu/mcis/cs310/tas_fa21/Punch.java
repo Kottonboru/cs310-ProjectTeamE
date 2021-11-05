@@ -56,12 +56,7 @@ public class Punch {
         return originaltimestamp;
     }
 
-    //public string getAdjustmenttype() {
-    //return adjustmenttype;
-    //}
-    //public void setAdjustmenttype(string adjustmenttype) {
-    //this.adjustmenttype = adjustmenttype;
-    //}
+   
     public void setOriginaltimestamp(LocalDateTime originaltimestamp) {
         this.originaltimestamp = originaltimestamp;
     }
@@ -119,10 +114,9 @@ public class Punch {
         LocalDateTime shiftStopGrace = shiftStop.minusMinutes(s.getGracePeriod());
         LocalDateTime shiftStopDock = shiftStop.minusMinutes(s.getDock());
         
-        int interval = s.getInterval();
-        
-        
-        
+        int intervalRound = originaltimestamp.toLocalTime().getMinute() % s.getInterval();
+        int halfInterval = s.getInterval()/2;
+        long roundIntervalLong;
         
         
         if (dayofweek != Calendar.SATURDAY && dayofweek != Calendar.SUNDAY) {
@@ -178,25 +172,30 @@ public class Punch {
         
         if (((punchtype == PunchType.CLOCK_IN || punchtype == PunchType.CLOCK_OUT)) && adjustmenttype == null) {
             
-            if (originaltimestamp.getMinute() % interval != 0) {
+            if (intervalRound != 0) {
                
-                //add or subtract minutes from originaltimestamp = adjustedtimestamp (to round it up or down)
-                //adjustmenttype = "Interval"
+                if (intervalRound < halfInterval) {
+                    
+                    roundIntervalLong = new Long(intervalRound);
+                    adjustedtimestamp = originaltimestamp.minusMinutes(roundIntervalLong).withSecond(0);
+                    adjustmenttype = "Interval Round";
+                    
+                }
+                else if (intervalRound >= halfInterval) {
+                    roundIntervalLong = new Long(s.getInterval() - intervalRound);
+                    adjustedtimestamp = originaltimestamp.plusMinutes(roundIntervalLong).withSecond(0);
+                    adjustmenttype = "Interval";
+                }
             }
                 
             else {
-                //adjustmenttype = "None"
-                //reset seconds/nanoseconds from originaltimestamp = adjustedtimestamp to zero
+                adjustmenttype = "None";
+                adjustedtimestamp = originaltimestamp.withSecond(0).withNano(0);
             }
                 
             
         }
-        
-        
-        //adjustments that apply on weekends
-    
-    
-    
+          
     }
 
 }
