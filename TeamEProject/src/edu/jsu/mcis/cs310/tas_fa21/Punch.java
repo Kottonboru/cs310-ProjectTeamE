@@ -191,11 +191,26 @@ public class Punch {
             else {
                 adjustmenttype = "None";
                 adjustedtimestamp = originaltimestamp.withSecond(0).withNano(0);
-            }
-                
+            } 
             
         }
-          
+           
+            
     }
+             public String printAdjusted(){
 
-}
+                //String builder to format the adjusted type. 
+            StringBuilder s = new StringBuilder();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MM/dd/yyyy HH:mm:ss");
+
+            s.append('#').append(badge.getId()).append(" ").append(punchtype);
+            s.append(": ").append(formatter.format(adjustedtimestamp).toUpperCase());
+            s.append(" (").append(adjustmenttype).append(")");
+            System.out.println(s);
+            
+            return s.toString();
+             }
+             
+        }
+
+
