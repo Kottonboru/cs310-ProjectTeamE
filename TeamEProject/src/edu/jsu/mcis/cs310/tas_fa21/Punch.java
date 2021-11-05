@@ -124,22 +124,22 @@ public class Punch {
            
             if (punchtype == PunchType.CLOCK_IN) {
                 //Interval
-                if (originaltimestamp.isAfter(shiftStartInterval) && originaltimestamp.isBefore(shiftStart)){
+                if ((originaltimestamp.isAfter(shiftStartInterval) || originaltimestamp.isEqual(shiftStartInterval)) && originaltimestamp.isBefore(shiftStart)){
                     adjustedtimestamp = shiftStart;
                     adjustmenttype = "Shift Start";
                 }
                 //Dock
-                else if (originaltimestamp.isBefore(shiftStartDock) && originaltimestamp.isAfter(shiftStartGrace)){
+                else if ((originaltimestamp.isBefore(shiftStartDock) || originaltimestamp.isEqual(shiftStartDock)) && originaltimestamp.isAfter(shiftStartGrace)){
                     adjustedtimestamp = shiftStartDock;
                     adjustmenttype = "Shift Dock";
                 }
                 //Grace
-                else if (originaltimestamp.isBefore(shiftStartGrace) && originaltimestamp.isAfter(shiftStart)){
+                else if ((originaltimestamp.isBefore(shiftStartGrace) || originaltimestamp.isEqual(shiftStartGrace)) && originaltimestamp.isAfter(shiftStart)){
                     adjustedtimestamp = shiftStart;
                     adjustmenttype = "Shift Start";
                 }
                 //Lunch
-                else if (originaltimestamp.isBefore(lunchStop) && originaltimestamp.isAfter(lunchStart)){
+                else if ((originaltimestamp.isBefore(lunchStop) || originaltimestamp.isEqual(lunchStop)) && originaltimestamp.isAfter(lunchStart)){
                     adjustedtimestamp = lunchStop;
                     adjustmenttype = "Lunch Stop";
                 }
@@ -147,26 +147,25 @@ public class Punch {
             
             else if (punchtype == PunchType.CLOCK_OUT) {
                 //Interval
-                if (originaltimestamp.isBefore(shiftStopInterval) && originaltimestamp.isAfter(shiftStop)){
+                if ((originaltimestamp.isBefore(shiftStopInterval) || originaltimestamp.isEqual(shiftStopInterval)) && originaltimestamp.isAfter(shiftStop)){
                     adjustedtimestamp = shiftStop;
                     adjustmenttype = "Shift Stop";
                 }
                 //Dock
-                else if (originaltimestamp.isAfter(shiftStopDock) && originaltimestamp.isBefore(shiftStopGrace)){
+                else if ((originaltimestamp.isAfter(shiftStopDock) || originaltimestamp.isEqual(shiftStopDock)) && originaltimestamp.isBefore(shiftStopGrace)){
                     adjustedtimestamp = shiftStopDock;
                     adjustmenttype = "Shift Dock";
                 }
                 //Grace
-                else if (originaltimestamp.isAfter(shiftStopGrace) && originaltimestamp.isBefore(shiftStop)){
+                else if ((originaltimestamp.isAfter(shiftStopGrace) || originaltimestamp.isEqual(shiftStopGrace)) && originaltimestamp.isBefore(shiftStop)){
                     adjustedtimestamp = shiftStop;
                     adjustmenttype = "Shift Stop";
                 }
                 //Lunch
-                else if (originaltimestamp.isBefore(lunchStop) && originaltimestamp.isAfter(lunchStart)){
+                else if (originaltimestamp.isBefore(lunchStop) && (originaltimestamp.isAfter(lunchStart) || originaltimestamp.isEqual(lunchStart))){
                     adjustedtimestamp = lunchStart;
                     adjustmenttype = "Lunch Start";
-                }
-                
+                }    
             }
         }
         
@@ -178,39 +177,35 @@ public class Punch {
                     
                     roundIntervalLong = new Long(intervalRound);
                     adjustedtimestamp = originaltimestamp.minusMinutes(roundIntervalLong).withSecond(0);
-                    adjustmenttype = "Interval Round";
-                    
+                    adjustmenttype = "Interval Round";   
                 }
+                
                 else if (intervalRound >= halfInterval) {
                     roundIntervalLong = new Long(s.getInterval() - intervalRound);
                     adjustedtimestamp = originaltimestamp.plusMinutes(roundIntervalLong).withSecond(0);
-                    adjustmenttype = "Interval";
+                    adjustmenttype = "Interval Round";
                 }
             }
                 
             else {
                 adjustmenttype = "None";
                 adjustedtimestamp = originaltimestamp.withSecond(0).withNano(0);
-            } 
-            
-        }
-           
-            
+            }    
+        }            
     }
-             public String printAdjusted(){
+    
+    public String printAdjusted(){
 
-                //String builder to format the adjusted type. 
-            StringBuilder s = new StringBuilder();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MM/dd/yyyy HH:mm:ss");
+    StringBuilder s = new StringBuilder();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MM/dd/yyyy HH:mm:ss");
 
-            s.append('#').append(badge.getId()).append(" ").append(punchtype);
-            s.append(": ").append(formatter.format(adjustedtimestamp).toUpperCase());
-            s.append(" (").append(adjustmenttype).append(")");
-            System.out.println(s);
-            
-            return s.toString();
-             }
-             
-        }
+    s.append('#').append(badge.getId()).append(" ").append(punchtype);
+    s.append(": ").append(formatter.format(adjustedtimestamp).toUpperCase());
+    s.append(" (").append(adjustmenttype).append(")");
+    System.out.println(s);
+
+    return s.toString();
+    }           
+}
 
 
