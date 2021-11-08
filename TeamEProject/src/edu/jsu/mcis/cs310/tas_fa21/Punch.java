@@ -64,6 +64,10 @@ public class Punch {
     public int getTerminalid() {
         return terminalid;
     }
+    
+    public LocalDateTime getAdjustedTimeStamp(){
+        return adjustedtimestamp;
+    }
 
     public void setTerminalid(int terminalid) {
         this.terminalid = terminalid;
