@@ -65,7 +65,7 @@ public class Punch {
         return terminalid;
     }
     
-    public LocalDateTime getAdjustedTimeStamp(){
+    public LocalDateTime getAdjustedTimestamp(){
         return adjustedtimestamp;
     }
 
