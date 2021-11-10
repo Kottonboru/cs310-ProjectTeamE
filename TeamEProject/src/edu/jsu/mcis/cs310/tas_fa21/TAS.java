@@ -5,6 +5,7 @@ package edu.jsu.mcis.cs310.tas_fa21;
 
 public class TAS {
     public static void main(String[] args) {
+
         //igDecimal d = new BigDecimal("0.1").add(new BigDecimal("0.2"));
         //System.out.println(d);
         
@@ -40,6 +41,28 @@ public class TAS {
         
         
         
+=======
+    }
+    
+    public static int calculateTotalMinutes (ArrayList<Punch>dailypunchlist, Shift shift){
+        
+        int total = 0;
+        
+        for (Punch punch : dailypunchlist) {
+            
+            LocalDateTime begin;
+            LocalDateTime end;
+            
+            if (punch.getPunchtype() == PunchType.CLOCK_IN){ 
+                begin = punch.getAdjustedTimeStamp();
+                
+                
+                total = (int)(ChronoUnit.MINUTES.between(begin,end));
+            }
+            
+        } 
+        return total;
+>>>>>>> origin/main
     }
     
     
