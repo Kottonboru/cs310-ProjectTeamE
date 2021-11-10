@@ -16,9 +16,9 @@ public class TAS {
         try{
             for(int i = 0; i < dailypunchlist.size(); i+= 1){
                 
-                duration = Duration.between(dailypunchlist.get(i));
-                int allMins = (int)duration.toMinutes();
-                totalTime = totalTime + allMin;
+                Duration dur = Duration.between(dailypunchlist.get(i).getAdjustedTimestamp(), dailypunchlist.get(i+1).getAdjustedTimestamp());
+                int allMins = (int)dur.toMinutes();
+                totalTime = totalTime + allMins;
                 
             }
 
