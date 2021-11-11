@@ -7,36 +7,40 @@ import java.util.ArrayList;
 
 public class TAS {
     public static void main(String[] args) {
+        
     }    
         
-    public static int calculateTotalMinutes(ArrayList<Punch> dailypunchlist, Shift shift){
+    @SuppressWarnings("empty-statement")
+    public static int calculateTotalMinutes(ArrayList<Punch> dailypunchlist, Shift shift) {
         
         int totalTime = 0; 
 
-        try{
-            for(int i = 0; i < dailypunchlist.size(); i+= 1){
-                
-                Duration dur = Duration.between(dailypunchlist.get(i).getAdjustedTimestamp(), dailypunchlist.get(i+1).getAdjustedTimestamp());
+        try {
+            for (int i = 0; i < dailypunchlist.size(); i += 2) {
+                //Changed "i += 1" to "i += 2"
+                Duration dur = Duration.between(dailypunchlist.get(i).getAdjustedTimestamp(), dailypunchlist.get(i + 1).getAdjustedTimestamp());
                 int allMins = (int)dur.toMinutes();
                 totalTime = totalTime + allMins;
                 
             }
 
-           boolean clockout = false;
+            boolean clockout = false;
            
-           for(Punch p : dailypunchlist){ 
+            for (Punch p : dailypunchlist) { 
 
-                if (p.getAdjustedTimestamp().toLocalTime().equals(shift.getLunchStart())){
+                if (p.getAdjustedTimestamp().toLocalTime().equals(shift.getLunchStart())) {
                     clockout = true; 
                     break;
-                 }
-           }
-           if(!clockout){
-           // finish if they do not clockout
-           }
+                }
+            }
+            if (!clockout) {
+                //Added below code
+                totalTime = totalTime - 30;
+            }
 
-    }
-    catch(IndexOutOfBoundsException e){};
+        }
+    catch (IndexOutOfBoundsException e) {}
+    System.out.println(totalTime);
     return totalTime;
 
     }  
