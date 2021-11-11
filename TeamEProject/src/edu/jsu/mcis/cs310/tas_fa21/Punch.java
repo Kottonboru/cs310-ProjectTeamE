@@ -98,6 +98,15 @@ public class Punch {
         
     }
     
+    public void setAdjustmenttype(String adjustmenttype) {
+        this.adjustmenttype = adjustmenttype;
+    }
+    
+            
+    public String getAdjustmenttype() {
+        return adjustmenttype;
+    }
+    
     public void adjust(Shift s) {
         
         

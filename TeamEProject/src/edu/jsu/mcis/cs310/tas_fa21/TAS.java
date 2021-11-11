@@ -53,6 +53,14 @@ public class TAS {
         ArrayList<HashMap<String, String>> jsonData = new ArrayList<>();
         
         DateTimeFormatter format = DateTimeFormatter.ofPattern("EEE" + " LL/dd/uuuu HH:mm:ss" );
+        /* \"originaltimestamp\":\"TUE 09\\/18\\/2018 11:59:33\",
+        \"badgeid\":\"08D01475\",\
+        "adjustedtimestamp\":\"TUE 09\\/18\\/2018 12:00:00\",\
+        "adjustmenttype\":\"Shift Start\",\
+        "terminalid\":\"104\",\
+        "id\":\"4943\",\
+        "punchtype\":\"CLOCK IN\"
+        */
         
         for(Punch punch : dailypunchlist){
             HashMap<String, String> punchData = new HashMap<>();
@@ -61,7 +69,7 @@ public class TAS {
             punchData.put("originaltimestamp", String.valueOf(punch.getOriginaltimestamp().format(format).toUpperCase()));
             punchData.put("badgeid", String.valueOf(punch.getBadge().getId()));
             punchData.put("adjustedtimestamp", String.valueOf(punch.getAdjustedTimestamp().format(format).toUpperCase()));
-            punchData.put("adjustmenttype", String.valueOf(punch.getAdjustedTimestamp()));
+            punchData.put("adjustmenttype", String.valueOf(punch.getAdjustmenttype()));
             punchData.put("terminalid", String.valueOf(punch.getTerminalid()));
             punchData.put("id",String.valueOf(punch.getPunchId())); 
             punchData.put("punchtype", String.valueOf(punch.getPunchtype()));
