@@ -81,6 +81,10 @@ public class TAS {
         String json = JSONValue.toJSONString(jsonData);
         return json;
     }
+    
+    public static double calculateAbsenteeism(ArrayList<Punch> punchlist, Shift s){
+        
+    }
 }
     
     

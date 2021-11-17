@@ -311,4 +311,37 @@ public class TASDatabase {
                            
     }
     
+    public Absenteeism getAbsenteeism(Badge badge, LocalDate payperiod){
+        
+        Absenteeism outputAbsen = null; 
+        String query;
+        
+        try{
+            
+            //Query for badge and payperiod
+            query = "SELECT * FROM absenteeism WHERE badgeid = ? AND payperiod = ?";
+            pstSelect = conn.prepareStatement(query);
+            pstSelect.setString(1, badge.getId());
+            pstSelect.setDate(2, java.sql.Date.valueOf(payperiod));
+           
+            
+            hasresults = pstSelect.execute();
+            
+            if(hasresults){
+                
+                ResultSet resultset = pstSelect.getResultSet();
+                resultset.next();
+                
+                //get percentage from database as double. 
+                double abpercentage = resultset.getDouble("percentage");
+                
+                //Add the types into the constructor of the Absenteeism class. 
+                outputAbsen = new Absenteeism(badge, payperiod, abpercentage);
+                
+            }
+        }catch (SQLException e){ System.out.println("Error in getAbsenteeism: " + e); }
+        
+        return outputAbsen; 
+    }
+    
 }
