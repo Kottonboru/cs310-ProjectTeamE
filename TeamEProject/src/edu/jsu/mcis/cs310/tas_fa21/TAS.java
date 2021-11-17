@@ -83,6 +83,10 @@ public class TAS {
     }
     
     public static double calculateAbsenteeism(ArrayList<Punch> punchlist, Shift s){
+       
+        double absenteepercentage;
+        double calTotalMinutes;
+        int total = 0;
         
     }
     
