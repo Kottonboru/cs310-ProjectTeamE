@@ -4,6 +4,8 @@ import java.sql.*;
 import java.sql.Connection;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalField;
+import java.time.temporal.WeekFields;
 //import java.util.logging.Level;
 //import java.util.logging.Logger;
 import java.util.*;
@@ -222,13 +224,10 @@ public class TASDatabase {
         String query;
         int updateCount;
 
-    // get punch data from punch object
         int results = 0;
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         LocalDateTime originalTime = p.getOriginaltimestamp();
-        //String otsString = originalTime.format(dtf);
-        //System.err.println("New Punch Timestamp (from insertPunch(): " + otsString);
         String badgeid = p.getBadge().getId(); 
         int terminalid = p.getTerminalid(); 
         PunchType punchtypeid = p.getPunchtype();
@@ -317,8 +316,6 @@ public class TASDatabase {
         String query;
         
         try{
-            
-            //Query for badge and payperiod
             query = "SELECT * FROM absenteeism WHERE badgeid = ? AND payperiod = ?";
             pstSelect = conn.prepareStatement(query);
             pstSelect.setString(1, badge.getId());
@@ -332,10 +329,10 @@ public class TASDatabase {
                 ResultSet resultset = pstSelect.getResultSet();
                 resultset.next();
                 
-                //get percentage from database as double. 
+
                 double abpercentage = resultset.getDouble("percentage");
                 
-                //Add the types into the constructor of the Absenteeism class. 
+
                 outputAbsen = new Absenteeism(badge, payperiod, abpercentage);
                 
             }
@@ -343,5 +340,85 @@ public class TASDatabase {
         
         return outputAbsen; 
     }
+    
+    
+        public ArrayList<Punch> getPayPeriodPunchList(Badge badge, LocalDate payperiod, Shift s){
+        
+        ArrayList<Punch> punchlist = new ArrayList<>();
+        
+        TemporalField fieldUS = WeekFields.of(Locale.US).dayOfWeek();
+        
+
+        Punch obje;
+        
+
+        LocalDate payperiodstart = payperiod.with(fieldUS, Calendar.SUNDAY); //Assumes "date" is a LocalDate
+        LocalDate payperiodend = payperiod.with(fieldUS, Calendar.SATURDAY);
+        
+        String query;
+        
+    
+        
+        try{
+            query = "SELECT * FROM punch WHERE DATE(originaltimestamp) >= ? AND DATE(originaltimestamp) <= ? AND badgeid = ? ORDER BY originaltimestamp";
+
+            pstSelect = conn.prepareStatement(query);
+            pstSelect.setDate(1, java.sql.Date.valueOf(payperiodstart));
+            pstSelect.setDate(2, java.sql.Date.valueOf(payperiodend));
+            pstSelect.setString(3, badge.getId());
+
+            hasresults = pstSelect.execute();
+            
+            
+            
+            
+
+            if(hasresults){
+                
+                ResultSet resultset = pstSelect.getResultSet();
+
+                while(resultset.next()){
+                    
+                    
+                    int punchid = resultset.getInt("id");
+                    obje = getPunch(punchid);
+
+                    punchlist.add(obje);
+                }
+                
+            }
+
+        
+        
+        }catch(SQLException e){ System.out.println("Error in getPayPeriodPunchList: " + e); }
+
+    return punchlist;
+    }
+    
+        public void insertAbsenteeism(Absenteeism absenteeism){
+
+        Badge badgeid = absenteeism.getBadgeid();
+        LocalDate payperiod = absenteeism.getPayperiod();
+        Double percentage = absenteeism.getPercentage();
+        
+        String badgeids = badgeid.getId();
+        
+        String query;
+        int updateCount; 
+        
+        try{
+            query = "INSERT INTO absenteeism (badgeid, payperiod, percentage) VALUES (?, ?, ?)";
+            pstUpdate = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            
+            pstUpdate.setString(1, badgeids);
+            pstUpdate.setDate(2, java.sql.Date.valueOf(payperiod));
+            pstUpdate.setDouble(3, percentage);
+            
+            updateCount = pstUpdate.executeUpdate();
+            
+            
+        }catch(SQLException e){ System.out.println("Error in insertAbsenteeism: " + e);}
+        
+        }  
     
 }
