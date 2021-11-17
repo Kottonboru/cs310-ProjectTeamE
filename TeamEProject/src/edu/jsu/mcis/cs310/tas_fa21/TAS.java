@@ -84,11 +84,24 @@ public class TAS {
     
     public static double calculateAbsenteeism(ArrayList<Punch> punchlist, Shift s){
        
-        double absenteepercentage;
-        double calTotalMinutes;
-        int total = 0;
+        double absenteepercentage = 0.0;
+        double shiftDuration = 0.0;
+        double totalDuration = 0.0;
         
-    }
+        shiftDuration = s.getShiftDuration()- s.getLunchDuration();
+        totalDuration = calculateTotalMinutes(punchlist,s);
+        
+        absenteepercentage = (toatalDuration / shiftDuration);
+        
+        return absenteepercentage;
+      
+      
+        
+            
+          
+           
+        
+    
     
 }
     
