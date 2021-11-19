@@ -91,7 +91,7 @@ public class TAS {
         shiftDuration = s.getShiftDuration()- s.getLunchDuration();
         totalDuration = calculateTotalMinutes(punchlist,s);
         
-        absenteepercentage = (toatalDuration / shiftDuration);
+        absenteepercentage = (totalDuration / shiftDuration);
         
         return absenteepercentage;
       
@@ -103,6 +103,7 @@ public class TAS {
         
     
     
+    }
 }
     
     
