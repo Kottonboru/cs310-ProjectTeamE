@@ -316,6 +316,10 @@ public class TASDatabase {
         String query;
         
         try{
+            
+            TemporalField fieldUS = WeekFields.of(Locale.US).dayOfWeek();
+            payperiod = payperiod.with(fieldUS, Calendar.SUNDAY);
+            
             query = "SELECT * FROM absenteeism WHERE badgeid = ? AND payperiod = ?";
             pstSelect = conn.prepareStatement(query);
             pstSelect.setString(1, badge.getId());
@@ -342,7 +346,7 @@ public class TASDatabase {
     }
     
     
-        public ArrayList<Punch> getPayPeriodPunchList(Badge badge, LocalDate payperiod, Shift s){
+    public ArrayList<Punch> getPayPeriodPunchList(Badge badge, LocalDate payperiod, Shift s){
         
         ArrayList<Punch> punchlist = new ArrayList<>();
         
@@ -382,6 +386,8 @@ public class TASDatabase {
                     
                     int punchid = resultset.getInt("id");
                     obje = getPunch(punchid);
+                    
+                    obje.adjust(s);
 
                     punchlist.add(obje);
                 }
@@ -392,7 +398,8 @@ public class TASDatabase {
         
         }catch(SQLException e){ System.out.println("Error in getPayPeriodPunchList: " + e); }
 
-    return punchlist;
+        return punchlist;
+        
     }
     
         public void insertAbsenteeism(Absenteeism absenteeism){
